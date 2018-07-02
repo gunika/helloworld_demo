@@ -36,6 +36,12 @@ pipeline{
 				}
 			}
 		}
+		stage('Docker Build') {
+      
+            steps {
+                sh 'docker build -t i_gunika_hellodevops .'
+                  }
+        }
 		stage ('Artifactory Deploy'){
 		
 			steps{
