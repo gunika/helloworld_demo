@@ -28,7 +28,7 @@ pipeline{
 				}
 			}
 		}
-		stage ('Install Stage'){
+		stage ('Maven Install Stage'){
 
 			steps {
 				withMaven(maven : 'default'){
@@ -36,7 +36,7 @@ pipeline{
 				}
 			}
 		}
-		stage('Docker Build') {
+		stage('Docker Deployment') {
       
             steps {
                 sh 'docker build -t i_gunika_hellodevops .'
