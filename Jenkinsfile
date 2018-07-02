@@ -40,6 +40,7 @@ pipeline{
       
             steps {
                 sh 'docker build -t i_gunika_hellodevops .'
+                sh 'docker rm -f c_gunika_hellodevops'
                 sh 'docker run --name c_gunika_hellodevops -d -p 9199:8080 i_gunika_hellodevops'
                   }
         }
