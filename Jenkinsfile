@@ -59,6 +59,14 @@ pipeline{
                 sh 'docker run --name c_gunika_hellodevops -d -p 9690:8080 i_gunika_hellodevops'
                   }
         }
+        		stage('LOG') {
+      		     steps {
+		     	     echo 'Hello, world!'
+           		     logstashSend failBuild: true, maxLines: 1000
+			     echo 'Bye, world!'
+       			    }
+			    }
+
 		
 
 		
