@@ -65,7 +65,7 @@ pipeline{
 		     	     sh 'docker rm -f c_elasticsearch'
 		     	     sh 'docker run -d -p 9200:9200 -it -h elasticsearch --name c_elasticsearch elasticsearch'
 		     	     sh 'docker run -d -p 5601:5601 -h kibana --name c_kibana --link c_elasticsearch:elasticsearch kibana'
-		     	     sh 'sleep 20'
+		     	     sh 'sleep 30'
            		     logstashSend failBuild: true, maxLines: 1000
 
        			    }
