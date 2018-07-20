@@ -41,7 +41,7 @@ pipeline{
 		stage('Docker Image Release') {
       
             steps {
-             		sh 'wget -O HelloDevOps.war http://10.127.126.113:8040/artifactory/gunika/com/nagarro/devops/training/2018/gunika/pipelines/helloDevops/0.0.1-SNAPSHOT/helloDevops-0.0.1-SNAPSHOT.war
+             		sh 'wget -O HelloDevOps.war http://10.127.126.113:8040/artifactory/gunika/com/nagarro/devops/training/2018/gunika/pipelines/helloDevops/0.0.1-SNAPSHOT/helloDevops-0.0.1-SNAPSHOT.war'
                		sh 'docker build -t i_gunika_hellodevops .'
                   }
         }
