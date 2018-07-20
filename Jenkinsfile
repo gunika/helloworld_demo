@@ -41,7 +41,7 @@ pipeline{
 		stage('Docker Image Release') {
       
             steps {
-             		sh 'wget -O HelloDevOps.war http://10.127.126.113:8081/artifactory/gunika/com/nagarro/devops/training/2018/gunika/pipelines/helloDevops/0.0.1-SNAPSHOT/helloDevops-0.0.1-SNAPSHOT.war'
+             		sh 'wget -O HelloDevOps.war http://10.127.126.113:8040/artifactory/gunika/com/nagarro/devops/training/2018/gunika/pipelines/helloDevops/0.0.1-SNAPSHOT/helloDevops-0.0.1-SNAPSHOT.war
                		sh 'docker build -t i_gunika_hellodevops .'
                   }
         }
@@ -49,15 +49,12 @@ pipeline{
 		stage('Docker Deployment') {
       
             steps {
-                	sh 'docker rm -f c_gunika_hellodevops'
                 	sh 'docker run --name c_gunika_hellodevops -d -p 9690:8080 i_gunika_hellodevops'
                   }
         }
 
         stage('Setup ELK') {
       		steps{
-		     	    sh 'docker rm -f c_kibana'
-		     	    sh 'docker rm -f c_elasticsearch'
 		     	    sh 'docker run -d -p 9200:9200 -it -h elasticsearch --name c_elasticsearch elasticsearch'
 		     	    sh 'docker run -d -p 5601:5601 -h kibana --name c_kibana --link c_elasticsearch:elasticsearch kibana'
 		     	    sh 'sleep 30'
