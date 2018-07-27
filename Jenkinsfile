@@ -1,3 +1,13 @@
+def portCheck(int p){
+                  env.p=p;
+                  sh '''
+                   ContainerID=$(docker ps | grep $p | cut -d " " -f 1)
+                   if [  $ContainerID ]
+                   then
+                      docker rm -f $ContainerID
+                   fi
+                     '''
+                    }
 pipeline{
 	agent any
 
@@ -49,13 +59,16 @@ pipeline{
 		stage('Docker Deployment') {
       
             steps {
+            		portCheck(9690)
                 	sh 'docker run --name c_gunika_hellodevops -d -p 9690:8080 i_gunika_hellodevops'
                   }
         }
 
         stage('Setup ELK') {
       		steps{
+            		portCheck(9200)
 		     	    sh 'docker run -d -p 9200:9200 -it -h elasticsearch --name c_elasticsearch elasticsearch'
+      				portCheck(5601)
 		     	    sh 'docker run -d -p 5601:5601 -h kibana --name c_kibana --link c_elasticsearch:elasticsearch kibana'
 		     	    sh 'sleep 30'
            		    logstashSend failBuild: true, maxLines: 1000
