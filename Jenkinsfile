@@ -67,9 +67,9 @@ pipeline{
         stage('Setup ELK') {
       		steps{
             		portCheck(9200)
-		     	    sh 'docker run -d -p 9200:9200 -it -h elasticsearch --name c_elasticsearch elasticsearch'
+		     	    sh 'docker run -d -p 9200:9200 -it -h elasticsearch --name c_gunika_elasticsearch elasticsearch'
       				portCheck(5601)
-		     	    sh 'docker run -d -p 5601:5601 -h kibana --name c_kibana --link c_elasticsearch:elasticsearch kibana'
+		     	    sh 'docker run -d -p 5601:5601 -h kibana --name c_kibana --link c_gunika_elasticsearch:elasticsearch kibana'
 		     	    sh 'sleep 30'
            		    logstashSend failBuild: true, maxLines: 1000
 
