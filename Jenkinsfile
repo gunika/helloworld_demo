@@ -16,7 +16,7 @@ pipeline{
 		stage ('Test and Build'){
 
 			steps {
-				withMaven(maven : 'default'){
+				withMaven(maven : 'maven'){
 					sh 'mvn install'
 				}
 			}
@@ -26,7 +26,7 @@ pipeline{
 		
 			steps{
 			
-				withSonarQubeEnv('sonarqube') {
+				withSonarQubeEnv('sonar') {
 					sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
 
 				}
@@ -40,7 +40,7 @@ pipeline{
 					def server = Artifactory.server('default')
 					def rtMaven = Artifactory.newMavenBuild()
 					
-					rtMaven.deployer server: server, releaseRepo: 'gunika', snapshotRepo: 'gunika'
+					rtMaven.deployer server: server, releaseRepo: 'helloworld_demo', snapshotRepo: 'helloworld_demo'
 					rtMaven.tool = 'default'
 					def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'install'
 					server.publishBuildInfo buildInfo
@@ -48,32 +48,6 @@ pipeline{
 			}
 		}
 
-		stage('Docker Image Release') {
-      
-            steps {
-             		sh 'wget -O HelloDevOps.war http://10.127.126.113:8040/artifactory/gunika/com/nagarro/devops/training/2018/gunika/pipelines/helloDevops/0.0.1-SNAPSHOT/helloDevops-0.0.1-SNAPSHOT.war'
-               		sh 'docker build -t i_gunika_hellodevops .'
-                  }
-        }
 
-		stage('Docker Deployment') {
-      
-            steps {
-            		portCheck(9690)
-                	sh 'docker run --name c_gunika_hellodevops -d -p 9690:8080 i_gunika_hellodevops'
-                  }
-        }
-
-        stage('Setup ELK') {
-      		steps{
-            		portCheck(9200)
-		     	    sh 'docker run -d -p 9200:9200 -it -h elasticsearch --name c_gunika_elasticsearch elasticsearch'
-      				portCheck(5601)
-		     	    sh 'docker run -d -p 5601:5601 -h kibana --name c_kibana --link c_gunika_elasticsearch:elasticsearch kibana'
-		     	    sh 'sleep 30'
-           		    logstashSend failBuild: true, maxLines: 1000
-
-       		}
-	    }
 	}
 }
