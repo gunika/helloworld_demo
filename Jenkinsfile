@@ -50,7 +50,7 @@ pipeline{
 		stage('Docker Image Release') {
       
             steps {
-             		sh 'wget -O HelloDevOps.war http://http://3.17.20.253:8081/artifactory/devops.lab.session/helloworld_demo/helloworld/0.0.1-SNAPSHOT/helloworld-0.0.1-SNAPSHOT.war'
+             		sh 'wget -O HelloDevOps.war http://http://3.17.20.253:8081/artifactory/devops.lab.session/com/nagarro/devops/lab/session/devops.lab/0.0.1-SNAPSHOT/devops.lab-0.0.1-SNAPSHOT.war'
                		sh 'docker build -t i_devops_lab_session .'
                   }
         }
