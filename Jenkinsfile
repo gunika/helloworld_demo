@@ -47,7 +47,24 @@ pipeline{
 					}
 			}
 		}
+		stage('Docker Image Release') {
+      
+            steps {
+             		sh 'wget -O HelloDevOps.war http://http://3.17.20.253:8081/artifactory/devops.lab.session/helloworld_demo/helloworld/0.0.1-SNAPSHOT/helloworld-0.0.1-SNAPSHOT.war'
+               		sh 'docker build -t i_devops_lab_session .'
+                  }
+        }
 
+
+		stage('Docker Deployment') {
+      
+            steps {
+            		portCheck(9690)
+                	sh 'docker run --name c_devops_lab_session -d -p 9690:8080 i_devops_lab_session'
+                  }
+        }
+
+ 
 
 	}
 }
