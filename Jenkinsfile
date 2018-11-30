@@ -40,7 +40,7 @@ pipeline{
 					def server = Artifactory.server('default')
 					def rtMaven = Artifactory.newMavenBuild()
 					
-					rtMaven.deployer server: server, releaseRepo: 'helloworld_demo', snapshotRepo: 'helloworld_demo'
+					rtMaven.deployer server: server, releaseRepo: 'devops.lab.session'
 					rtMaven.tool = 'maven'
 					def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'install'
 					server.publishBuildInfo buildInfo
